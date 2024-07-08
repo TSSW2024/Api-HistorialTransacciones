@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-transaccion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-transaccion
+  template:
+    metadata:
+      labels:
+        app: backend-transaccion
+    spec:
+      containers:
+      - name: backend-transaccion
+        image: {IMAGE_TAG}
+        ports:
+        - containerPort: 8084
+        resources:
+          # You must specify requests for CPU to autoscale
+          # based on CPU utilization
+          limits:
+            cpu: 50m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi

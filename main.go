@@ -18,16 +18,12 @@ func main() {
 
 	// Crear el router
 	r := gin.Default()
-	r.SetTrustedProxies([]string{"127.0.0.1/8"})
 	// Configurar las rutas para CRUD de usuarios
-	//r.POST("/users", handlers.CreateUser(db))
-
-	/*
-		r.GET("/users/:id", handlers.GetUser(db))
-		r.GET("/users", handlers.GetAllUsers(db))
-		r.PUT("/users/:id", handlers.UpdateUser(db))
-		r.DELETE("/users/:id", handlers.DeleteUser(db))
-	*/
+	r.POST("/users", handlers.CreateUser(db))
+	r.GET("/users/:id", handlers.GetUser(db))
+	r.GET("/users", handlers.GetAllUsers(db))
+	r.PUT("/users/:id", handlers.UpdateUser(db))
+	r.DELETE("/users/:id", handlers.DeleteUser(db))
 
 	//db.AutoMigrate(&models.LogEntry{})
 
