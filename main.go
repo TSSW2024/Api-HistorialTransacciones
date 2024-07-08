@@ -1,17 +1,26 @@
 package main
 
 import (
+	"backend/api/config"
 	"backend/api/handlers"
 	_ "backend/api/models"
-	"backend/api/utils"
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+		return
+	}
+
 	// Conectar a la base de datos
-	db, err := utils.OpenGormDB()
+	db := config.InitDatabase()
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
 	}

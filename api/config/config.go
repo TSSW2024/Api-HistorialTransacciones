@@ -5,22 +5,35 @@ import (
 	"log"
 	"os"
 
-	"github.com/joho/godotenv"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-// DBURL genera la URL de conexión a la base de datos PostgreSQL
-func DBURL() string {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file")
+// OpenDB abre la conexión con la base de datos y la devuelve
+func InitDatabase() *gorm.DB {
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		log.Fatal("La variable de entorno DATABASE_URL no está configurada.")
 	}
 
-	DBHost := os.Getenv("DBHost")
-	DBUser := os.Getenv("DBUser")
-	DBPassword := os.Getenv("DBPassword")
-	DBPort := os.Getenv("DBPort")
-	DBName := os.Getenv("DBName")
+	// Initialize the GORM database connection
+	database, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s", DBUser, DBPassword, DBHost, DBPort, DBName)
+	// Test the database connection
+	sqlDB, err := database.DB()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = sqlDB.Ping()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Conexión a la base de datos exitosa.")
+
+	return database
 }
