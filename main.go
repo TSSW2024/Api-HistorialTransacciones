@@ -4,26 +4,27 @@ import (
 	"backend/api/config"
 	"backend/api/handlers"
 	_ "backend/api/models"
-	"log"
+
+	//"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	//"github.com/joho/godotenv"
 )
 
 func main() {
 
-	err := godotenv.Load()
+	/*err := godotenv.Load()
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
 		return
-	}
+	}*/
 
 	// Conectar a la base de datos
 	db := config.InitDatabase()
-	if err != nil {
+	/*if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
-	}
+	}*/
 
 	// Crear el router
 	r := gin.Default()
@@ -41,11 +42,12 @@ func main() {
 
 	r.POST("/log", handlers.CreateLogs(db))
 	//-----------------------------------------------------------
-	r.GET("/log/todo", handlers.GetAllLogs(db))   //ahora si funca
-	r.GET("/log/:UsuarioID", handlers.GetLog(db)) //no funca
+	r.GET("/log/todo", handlers.GetAllLogs(db))
+	r.GET("/log/:UsuarioID", handlers.GetLog(db))
 	//------------------------------------------------------------
 	r.DELETE("/log/:UsuarioID", handlers.Deletelogs(db))
-
+	r.POST("/wallet", handlers.CrearMonedero(db))
+	r.GET("/wallet/:usuarioID", handlers.GetMonedero(db))
 	// Iniciar el servidor
 	r.Run(":8084")
 
