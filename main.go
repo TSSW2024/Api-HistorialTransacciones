@@ -5,26 +5,26 @@ import (
 	"backend/api/handlers"
 	_ "backend/api/models"
 
-	//"log"
+	"log"
 
 	"github.com/gin-gonic/gin"
-	//"github.com/joho/godotenv"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 
-	/*err := godotenv.Load()
+	err := godotenv.Load()
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
 		return
-	}*/
+	}
 
 	// Conectar a la base de datos
 	db := config.InitDatabase()
-	/*if err != nil {
+	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
-	}*/
+	}
 
 	// Crear el router
 	r := gin.Default()
