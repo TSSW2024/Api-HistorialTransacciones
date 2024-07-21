@@ -7,6 +7,7 @@ import (
 
 	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -28,6 +29,15 @@ func main() {
 
 	// Crear el router
 	r := gin.Default()
+
+	// Configurar CORS
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"}, // Permitir todos los orígenes, puedes especificar dominios específicos
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 	// Configurar las rutas para CRUD de usuarios
 	r.POST("/users", handlers.CreateUser(db))
 	r.GET("/users/:id", handlers.GetUser(db))
