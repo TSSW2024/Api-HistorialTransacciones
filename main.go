@@ -3,7 +3,6 @@ package main
 import (
 	"backend/api/config"
 	"backend/api/handlers"
-	"backend/api/models"
 	_ "backend/api/models"
 
 	"log"
@@ -46,10 +45,10 @@ func main() {
 	r.PUT("/users/:id", handlers.UpdateUser(db))
 	r.DELETE("/users/:id", handlers.DeleteUser(db))
 
-	db.AutoMigrate(&models.Usuario{})
-	db.AutoMigrate(&models.Monedero{})
-	db.AutoMigrate(&models.Moneda{})
-	db.AutoMigrate(&models.LogEntry{})
+	// db.AutoMigrate(&models.Usuario{})
+	// db.AutoMigrate(&models.Monedero{})
+	// db.AutoMigrate(&models.Moneda{})
+	// db.AutoMigrate(&models.LogEntry{})
 
 	println("METODOS")
 	println("Para PRobar usa: http://localhost:8084/")
