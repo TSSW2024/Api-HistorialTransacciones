@@ -14,6 +14,6 @@ type LogEntry struct {
 	CardNumber string `json:"card_number"`
 
 	AuthorizationCode string  `json:"authorization_code"`
-	UsuarioID         uint    `json:"UsuarioID"`
+	UsuarioID         string  `json:"UsuarioID"`
 	Usuario           Usuario `gorm:"foreignKey:UsuarioID"`
 }
