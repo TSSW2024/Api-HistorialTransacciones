@@ -35,7 +35,7 @@ func CrearMonedero(db *gorm.DB) gin.HandlerFunc {
 				Monedas:   []models.Moneda{},
 			}
 			if err := db.Create(&newMonedero).Error; err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating monedero"})
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating monedero" + err.Error()})
 				return
 			}
 			c.JSON(http.StatusCreated, newMonedero)
