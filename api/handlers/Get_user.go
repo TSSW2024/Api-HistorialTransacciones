@@ -12,7 +12,7 @@ func GetUser(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")
 		var user models.Usuario
-		if err := db.Preload("Monedero.Monedas").First(&user, id).Error; err != nil {
+		if err := db.Preload("Monedero.Monedas").First(&user, "usuario_id = ?", id).Error; err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 			return
 		}

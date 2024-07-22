@@ -8,10 +8,12 @@ import (
 	"gorm.io/gorm"
 )
 
-// CrearMonedero maneja la creación o actualización del monedero
+// CrearMonedero maneja la creación de un monedero vacío si no existe
 func CrearMonedero(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var input models.Monedero
+		var input struct {
+			UsuarioID string `json:"usuarioID" binding:"required"`
+		}
 		if err := c.ShouldBindJSON(&input); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -24,16 +26,19 @@ func CrearMonedero(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		if existingMonedero.ID != 0 {
-			// Monedero existe, actualizamos
-			db.Model(&existingMonedero).Updates(input)
+			// Monedero existe, devolvemos el existente
 			c.JSON(http.StatusOK, existingMonedero)
 		} else {
-			// Monedero no existe, creamos uno nuevo
-			if err := db.Create(&input).Error; err != nil {
+			// Monedero no existe, creamos uno nuevo vacío
+			newMonedero := models.Monedero{
+				UsuarioID: input.UsuarioID,
+				Monedas:   []models.Moneda{},
+			}
+			if err := db.Create(&newMonedero).Error; err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating monedero"})
 				return
 			}
-			c.JSON(http.StatusCreated, input)
+			c.JSON(http.StatusCreated, newMonedero)
 		}
 	}
 }
