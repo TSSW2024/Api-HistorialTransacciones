@@ -3,7 +3,6 @@ package handlers
 import (
 	"backend/api/models"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -13,15 +12,9 @@ func GetLog(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		UsuarioID := c.Param("UsuarioID")
 
-		// Convertir UsuarioID a uint
-		id, err := strconv.ParseUint(UsuarioID, 10, 64)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UsuarioID"})
-			return
-		}
-
+		// Buscar el log basado en UsuarioID
 		var log models.LogEntry
-		if err := db.Preload("Usuario").First(&log, "id_session = ?", uint(id)).Error; err != nil {
+		if err := db.Preload("Usuario").First(&log, "id_session = ?", UsuarioID).Error; err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Log entry not found"})
 			return
 		}
