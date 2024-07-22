@@ -61,6 +61,7 @@ func main() {
 	r.DELETE("/log/:UsuarioID", handlers.Deletelogs(db))
 	r.POST("/wallet", handlers.CrearMonedero(db))
 	r.GET("/wallet/:usuarioID", handlers.GetMonedero(db))
+	r.POST("/wallet/moneda", handlers.CrearMoneda(db))
 	// Iniciar el servidor
 	r.Run(":8084")
 
