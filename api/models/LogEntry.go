@@ -15,5 +15,5 @@ type LogEntry struct {
 
 	AuthorizationCode string  `json:"authorization_code"`
 	UsuarioID         string  `json:"UsuarioID"`
-	Usuario           Usuario `gorm:"foreignKey:UsuarioID"`
+	Usuario           Usuario `gorm:"foreignKey:IdSession"`
 }

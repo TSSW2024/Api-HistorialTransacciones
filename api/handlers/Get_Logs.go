@@ -21,7 +21,7 @@ func GetLog(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		var log models.LogEntry
-		if err := db.Preload("Usuario").First(&log, "usuario_id = ?", uint(id)).Error; err != nil {
+		if err := db.Preload("Usuario").First(&log, "id_session = ?", uint(id)).Error; err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Log entry not found"})
 			return
 		}
