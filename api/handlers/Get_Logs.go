@@ -12,14 +12,14 @@ func GetLog(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		UsuarioID := c.Param("UsuarioID")
 
-		// Buscar el log basado en UsuarioID
-		var log models.LogEntry
-		if err := db.Preload("Usuario").First(&log, "id_session = ?", UsuarioID).Error; err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Log entry not found"})
+		// Buscar todos los logs basados en id_session
+		var logs []models.LogEntry
+		if err := db.Preload("Usuario").Where("id_session = ?", UsuarioID).Find(&logs).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "No logs found for the given id_session"})
 			return
 		}
 
-		c.JSON(http.StatusOK, log)
+		c.JSON(http.StatusOK, logs)
 	}
 }
 
